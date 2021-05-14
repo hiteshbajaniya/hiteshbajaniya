@@ -3,6 +3,7 @@ package com.neosoft.vehicle.service;
 import com.neosoft.vehicle.entity.Vehicle;
 import com.neosoft.vehicle.repository.VehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,16 +20,19 @@ public class VehicleServiceImpl implements VehicleService {
         return vehicleRepository.findAll();
     }
 
+    @Async
     @Override
     public List<Vehicle> getVehicleByBrand(String brand) {
         return vehicleRepository.findByBrand(brand);
     }
 
+    @Async
     @Override
     public Vehicle getVehicleDetails(String name) {
         return vehicleRepository.findVehicleByName(name);
     }
 
+    @Async
     @Override
     public List<Vehicle> getVehicleByType(String type) {
         return vehicleRepository.findByFuelType(type);
