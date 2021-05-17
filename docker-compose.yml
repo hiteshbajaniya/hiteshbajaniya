@@ -1,0 +1,29 @@
+version: "2.1"
+services:
+  web-service:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8080:8080"
+    networks:
+      - vehicles-mysql
+    depends_on:
+      vehicles-db:
+        condition: service_healthy
+
+  vehicles-db:
+    image: mysql:5
+    networks:
+      - vehicles-mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=vehicles
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 2
+
+networks:
+  vehicles-mysql:

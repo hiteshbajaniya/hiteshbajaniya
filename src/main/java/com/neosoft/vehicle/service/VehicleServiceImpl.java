@@ -7,6 +7,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class VehicleServiceImpl implements VehicleService {
@@ -16,26 +17,27 @@ public class VehicleServiceImpl implements VehicleService {
 
 
     @Override
-    public List<Vehicle> getAllVehicle() {
-        return vehicleRepository.findAll();
+    public CompletableFuture<List<Vehicle>> getAllVehicle() {
+
+        return CompletableFuture.completedFuture(vehicleRepository.findAll());
     }
 
     @Async
     @Override
-    public List<Vehicle> getVehicleByBrand(String brand) {
-        return vehicleRepository.findByBrand(brand);
+    public CompletableFuture<List<Vehicle>> getVehicleByBrand(String brand) {
+        return CompletableFuture.completedFuture(vehicleRepository.findByBrand(brand));
     }
 
     @Async
     @Override
-    public Vehicle getVehicleDetails(String name) {
-        return vehicleRepository.findVehicleByName(name);
+    public CompletableFuture<Vehicle> getVehicleDetails(String name) {
+        return CompletableFuture.completedFuture(vehicleRepository.findVehicleByName(name));
     }
 
     @Async
     @Override
-    public List<Vehicle> getVehicleByType(String type) {
-        return vehicleRepository.findByFuelType(type);
+    public CompletableFuture<List<Vehicle>> getVehicleByType(String type) {
+        return CompletableFuture.completedFuture(vehicleRepository.findByFuelType(type));
     }
 
     @Override

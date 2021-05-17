@@ -2,14 +2,13 @@ package com.neosoft.vehicle.controller;
 
 import com.neosoft.vehicle.entity.Vehicle;
 import com.neosoft.vehicle.service.VehicleService;
-import jdk.jfr.internal.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.beans.VetoableChangeListener;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/vehicle")
@@ -25,27 +24,28 @@ public class VehicleController {
     }
 
     @GetMapping("/type/{fuelType}")
-    public ResponseEntity<List<Vehicle>> getVehicleByType(@PathVariable("fuelType") String fuelType){
+    public ResponseEntity<CompletableFuture<List<Vehicle>>> getVehicleByType(@PathVariable("fuelType") String fuelType){
 
-        List<Vehicle> category = vehicleService.getVehicleByType(fuelType);
-        return new ResponseEntity<List<Vehicle>>(category, HttpStatus.OK);
+        CompletableFuture<List<Vehicle>> category = vehicleService.getVehicleByType(fuelType);
+        return new ResponseEntity<CompletableFuture<List<Vehicle>>>(category,HttpStatus.OK);
     }
 
     @GetMapping("/brand/{brand}")
-    public ResponseEntity<List<Vehicle>> getVehicleByBrand(@PathVariable("brand") String brand){
-
-        List<Vehicle> data = vehicleService.getVehicleByBrand(brand);
-        return new ResponseEntity<List<Vehicle>>(data, HttpStatus.OK);
+    public ResponseEntity<CompletableFuture<List<Vehicle>>> getVehicleByBrand(@PathVariable("brand") String brand){
+        CompletableFuture<List<Vehicle>> data = vehicleService.getVehicleByBrand(brand);
+        return new ResponseEntity<CompletableFuture<List<Vehicle>>>(data, HttpStatus.OK);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Vehicle>> getAllVehicle(){
-        return new ResponseEntity<List<Vehicle>>(vehicleService.getAllVehicle(),HttpStatus.OK);
+    public CompletableFuture<List<Vehicle>> getAllVehicle(){
+      return vehicleService.getAllVehicle();
+       // return new ResponseEntity<CompletableFuture<List<Vehicle>>>(data,HttpStatus.OK);
     }
 
     @GetMapping("/details/{name}")
-    public ResponseEntity<Vehicle> getVehicleDetails(@PathVariable("name") String name){
-        return new ResponseEntity<Vehicle>(vehicleService.getVehicleDetails(name), HttpStatus.OK);
+    public ResponseEntity<CompletableFuture<Vehicle>> getVehicleDetails(@PathVariable("name") String name){
+        CompletableFuture<Vehicle> vehicleDetails = vehicleService.getVehicleDetails(name);
+        return new ResponseEntity<CompletableFuture<Vehicle>>(vehicleDetails, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
